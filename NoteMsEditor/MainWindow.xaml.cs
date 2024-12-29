@@ -71,12 +71,14 @@ namespace NoteMsEditor
         {
             try
             {
+                string FullURL = $"https://note.ms/{url}";
+
                 if (webView.CoreWebView2 == null)
                 {
                     await webView.EnsureCoreWebView2Async();
                 }
 
-                webView.Source = new Uri(url);
+                webView.Source = new Uri(FullURL);
 
                 webView.CoreWebView2.NavigationCompleted += async (sender, args) =>
                 {
