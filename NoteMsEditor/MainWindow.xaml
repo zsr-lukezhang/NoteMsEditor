@@ -12,12 +12,14 @@
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
-
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBox x:Name="uriTextBox" Width="400" Height="20" Margin="10" PlaceholderText="notems" IsSpellCheckEnabled="False"></TextBox>
-        <TextBox x:Name="noteTextBox" Width="400" Height="100" Margin="10" TextWrapping="Wrap" PlaceholderText="Write your note here..." IsSpellCheckEnabled="False" AcceptsReturn="True" />
-        <Button x:Name="sendOnceButton" HorizontalAlignment="Center" Width="200" Height="50" Margin="10" ToolTipService.ToolTip="Send Request to Note.MS server" Click="sendOnceButton_Click">
-            <SymbolIcon Symbol="Save"/>
-        </Button>
-    </StackPanel>
+    <Grid>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBox x:Name="uriTextBox" Width="400" Height="20" Margin="10" PlaceholderText="notems" IsSpellCheckEnabled="False"></TextBox>
+            <TextBox x:Name="noteTextBox" Width="400" Height="100" Margin="10" TextWrapping="Wrap" PlaceholderText="Write your note here..." IsSpellCheckEnabled="False" AcceptsReturn="True" />
+            <Button x:Name="sendOnceButton" HorizontalAlignment="Center" Width="200" Height="50" Margin="10" ToolTipService.ToolTip="Send Request to Note.MS server" Click="sendOnceButton_Click">
+                <SymbolIcon Symbol="Save"/>
+            </Button>
+        </StackPanel>
+        <WebView2 x:Name="webView" Source="https://bing.com"/>
+    </Grid>
 </Window>

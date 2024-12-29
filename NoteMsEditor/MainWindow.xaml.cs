@@ -62,8 +62,6 @@ namespace NoteMsEditor
             }
         }
 
-        private WebView2 webView;
-
         private async void InitializeWebView2()
         {
             await webView.EnsureCoreWebView2Async();
