@@ -9,9 +9,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -21,6 +23,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.WebUI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -37,6 +40,8 @@ namespace NoteMsEditor
             this.InitializeComponent();
             // Extend the window into the title bar so that we can display the title bar content.
             ExtendsContentIntoTitleBar = true;
+            // Setup WebView2
+            InitializeWebView2();
         }
 
         /// <summary>
@@ -45,9 +50,42 @@ namespace NoteMsEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void sendOnceButton_Click(object sender, RoutedEventArgs e)
+        private async void sendOnceButton_Click(object sender, RoutedEventArgs e)
         {
-            sendOnceButton.Content = "Clicked";
+            try
+            {
+                await WriteToNoteMS(uriTextBox.Text, noteTextBox.Text);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private WebView2 webView;
+
+        private async void InitializeWebView2()
+        {
+            await webView.EnsureCoreWebView2Async();
+        }
+
+        public async Task WriteToNoteMS(string url, string content)
+        {
+            string FullURL = $"https://note.ms/{url}";
+
+            webView.Source = new Uri(FullURL);
+
+            webView.CoreWebView2.NavigationCompleted += async (sender, args) =>
+            {
+                string script = $@"
+                var contentArea = document.querySelector('textarea');
+                if (contentArea) {{
+                    contentArea.value = '{content}';
+                    contentArea.dispatchEvent(new Event('input'));
+                }}
+            ";
+                await webView.CoreWebView2.ExecuteScriptAsync(script);
+            };
         }
     }
 }
