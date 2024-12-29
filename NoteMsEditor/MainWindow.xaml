@@ -20,11 +20,12 @@
                 <Button x:Name="sendOnceButton" HorizontalAlignment="Center" Width="200" Height="50" Margin="10" ToolTipService.ToolTip="Send Request to Note.MS server" Click="sendOnceButton_Click">
                     <SymbolIcon Symbol="Save"/>
                 </Button>
-                <Button x:Name="readOnceButton" HorizontalAlignment="Center" Width="95" Height="50" Margin="10" ToolTipService.ToolTip="Get Remote Text" Click="refreshOnceButton_Click">
+                <Button x:Name="refreshOnceButton" HorizontalAlignment="Center" Width="95" Height="50" Margin="10" ToolTipService.ToolTip="Get Remote Text" Click="refreshOnceButton_Click">
                     <SymbolIcon Symbol="Refresh"/>
                 </Button>
             </StackPanel>
         </StackPanel>
         <WebView2 x:Name="webView" Source="https://bing.com" Visibility="Collapsed"/>
+        <ProgressRing x:Name="loadingProgressRing" IsActive="True" Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
     </Grid>
 </Window>

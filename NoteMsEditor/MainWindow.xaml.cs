@@ -55,7 +55,10 @@ namespace NoteMsEditor
         {
             try
             {
+                disableAll();
                 await WriteToNoteMS(uriTextBox.Text, noteTextBox.Text);
+                await Task.Delay(1000); // Just for UI LOL
+                enableAll();
             }
             catch (Exception ex)
             {
@@ -161,13 +164,33 @@ namespace NoteMsEditor
         {
             try
             {
+                disableAll();
                 string RemoteContent = await ReadFromNoteMS(uriTextBox.Text);
                 noteTextBox.Text = RemoteContent;
+                enableAll();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
+        }
+
+        private void disableAll()
+        {
+            loadingProgressRing.Visibility = Visibility.Visible;
+            sendOnceButton.IsEnabled = false;
+            refreshOnceButton.IsEnabled = false;
+            uriTextBox.IsEnabled = false;
+            noteTextBox.IsEnabled = false;
+        }
+
+        private void enableAll()
+        {
+            loadingProgressRing.Visibility = Visibility.Collapsed;
+            sendOnceButton.IsEnabled = true;
+            refreshOnceButton.IsEnabled = true;
+            uriTextBox.IsEnabled = true;
+            noteTextBox.IsEnabled = true;
         }
     }
 }
