@@ -20,6 +20,6 @@
                 <SymbolIcon Symbol="Save"/>
             </Button>
         </StackPanel>
-        <WebView2 x:Name="webView" Source="https://bing.com"/>
+        <WebView2 x:Name="webView" Source="https://bing.com" Visibility="Collapsed"/>
     </Grid>
 </Window>
