@@ -69,21 +69,33 @@ namespace NoteMsEditor
 
         public async Task WriteToNoteMS(string url, string content)
         {
-            string FullURL = $"https://note.ms/{url}";
-
-            webView.Source = new Uri(FullURL);
-
-            webView.CoreWebView2.NavigationCompleted += async (sender, args) =>
+            try
             {
-                string script = $@"
-                var contentArea = document.querySelector('textarea');
-                if (contentArea) {{
-                    contentArea.value = '{content}';
-                    contentArea.dispatchEvent(new Event('input'));
-                }}
-            ";
-                await webView.CoreWebView2.ExecuteScriptAsync(script);
-            };
+                if (webView.CoreWebView2 == null)
+                {
+                    await webView.EnsureCoreWebView2Async();
+                }
+
+                webView.Source = new Uri(url);
+
+                webView.CoreWebView2.NavigationCompleted += async (sender, args) =>
+                {
+                    string escapedContent = content.Replace("\n", "\\n").Replace("\r", "\\r").Replace("'", "\\'");
+                    string script = $@"
+                    var contentArea = document.querySelector('textarea');
+                    if (contentArea) {{
+                        contentArea.value = '{escapedContent}';
+                        contentArea.dispatchEvent(new Event('input'));
+                    }}
+                ";
+                    await webView.CoreWebView2.ExecuteScriptAsync(script);
+                };
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
     }
 }
