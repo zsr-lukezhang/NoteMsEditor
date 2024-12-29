@@ -35,6 +35,8 @@ namespace NoteMsEditor
         public MainWindow()
         {
             this.InitializeComponent();
+            // Extend the window into the title bar so that we can display the title bar content.
+            ExtendsContentIntoTitleBar = true;
         }
 
         /// <summary>
