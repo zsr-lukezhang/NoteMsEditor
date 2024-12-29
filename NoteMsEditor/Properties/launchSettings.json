@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "NoteMsEditor (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "NoteMsEditor (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
