@@ -21,6 +21,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.Web.WebView2.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.WebUI;
@@ -67,6 +68,12 @@ namespace NoteMsEditor
             await webView.EnsureCoreWebView2Async();
         }
 
+        /// <summary>
+        /// Write content to a Note.MS note.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
         public async Task WriteToNoteMS(string url, string content)
         {
             try
@@ -93,6 +100,69 @@ namespace NoteMsEditor
                     await webView.CoreWebView2.ExecuteScriptAsync(script);
                 };
 
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+        /// <summary>
+        /// Read content from a Note.MS note.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public async Task<string> ReadFromNoteMS(string url)
+        {
+            string FullURL = $"https://note.ms/{url}";
+
+            if (webView.CoreWebView2 == null)
+            {
+                await webView.EnsureCoreWebView2Async();
+            }
+
+            TaskCompletionSource<string> tcs = new TaskCompletionSource<string>();
+
+            webView.Source = new Uri(FullURL);
+
+            async void NavigationCompletedHandler(CoreWebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
+            {
+                webView.CoreWebView2.NavigationCompleted -= NavigationCompletedHandler; // Only Once
+
+                string script = @"
+                var contentArea = document.querySelector('textarea');
+                if (contentArea) {
+                    contentArea.value;
+                } else {
+                    '';
+                }
+            ";
+                try
+                {
+                    string result = await webView.CoreWebView2.ExecuteScriptAsync(script);
+                    result = result.Trim('"').Replace("\\n", "\n").Replace("\\r", "\r"); // Change \n to enter
+                    tcs.SetResult(result);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            }
+
+            webView.CoreWebView2.NavigationCompleted += NavigationCompletedHandler;
+
+            return await tcs.Task;
+        }
+        /// <summary>
+        /// This method is called when the refreshOnceButton is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void refreshOnceButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string RemoteContent = await ReadFromNoteMS(uriTextBox.Text);
+                noteTextBox.Text = RemoteContent;
             }
             catch (Exception ex)
             {

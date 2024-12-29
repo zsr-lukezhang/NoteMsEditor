@@ -16,9 +16,14 @@
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBox x:Name="uriTextBox" Width="400" Height="20" Margin="10" PlaceholderText="notems" IsSpellCheckEnabled="False"></TextBox>
             <TextBox x:Name="noteTextBox" Width="400" Height="100" Margin="10" TextWrapping="Wrap" PlaceholderText="Write your note here..." IsSpellCheckEnabled="False" AcceptsReturn="True" />
-            <Button x:Name="sendOnceButton" HorizontalAlignment="Center" Width="200" Height="50" Margin="10" ToolTipService.ToolTip="Send Request to Note.MS server" Click="sendOnceButton_Click">
-                <SymbolIcon Symbol="Save"/>
-            </Button>
+            <StackPanel x:Name="Buttons" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button x:Name="sendOnceButton" HorizontalAlignment="Center" Width="200" Height="50" Margin="10" ToolTipService.ToolTip="Send Request to Note.MS server" Click="sendOnceButton_Click">
+                    <SymbolIcon Symbol="Save"/>
+                </Button>
+                <Button x:Name="readOnceButton" HorizontalAlignment="Center" Width="95" Height="50" Margin="10" ToolTipService.ToolTip="Get Remote Text" Click="refreshOnceButton_Click">
+                    <SymbolIcon Symbol="Refresh"/>
+                </Button>
+            </StackPanel>
         </StackPanel>
         <WebView2 x:Name="webView" Source="https://bing.com" Visibility="Collapsed"/>
     </Grid>
