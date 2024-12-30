@@ -12,7 +12,7 @@
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
-    <Grid>
+    <Grid PreviewKeyDown="Grid_PreviewKeyDown">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBox x:Name="uriTextBox" Width="400" Height="20" Margin="10" PlaceholderText="notems" IsSpellCheckEnabled="False"></TextBox>
             <TextBox x:Name="noteTextBox" Width="400" Height="100" Margin="10" TextWrapping="Wrap" PlaceholderText="Write your note here..." IsSpellCheckEnabled="False" AcceptsReturn="True" />
@@ -25,7 +25,7 @@
                 </Button>
             </StackPanel>
         </StackPanel>
-        <WebView2 x:Name="webView" Source="https://bing.com" Visibility="Collapsed"/>
+        <WebView2 x:Name="webView" Source="https://bing.com" Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed"/>
         <ProgressRing x:Name="loadingProgressRing" IsActive="True" Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
     </Grid>
 </Window>

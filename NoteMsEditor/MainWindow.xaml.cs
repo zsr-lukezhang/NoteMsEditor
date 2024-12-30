@@ -192,5 +192,13 @@ namespace NoteMsEditor
             uriTextBox.IsEnabled = true;
             noteTextBox.IsEnabled = true;
         }
+
+        private void Grid_PreviewKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.F12)
+            {
+                webView.Visibility = Visibility.Visible;
+            }
+        }
     }
 }
