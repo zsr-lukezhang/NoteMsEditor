@@ -90,19 +90,22 @@ namespace NoteMsEditor
 
                 webView.Source = new Uri(FullURL);
 
-                webView.CoreWebView2.NavigationCompleted += async (sender, args) =>
+                async void NavigationCompletedHandler(CoreWebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
                 {
+                    webView.CoreWebView2.NavigationCompleted -= NavigationCompletedHandler; // Only Once
+
                     string escapedContent = content.Replace("\n", "\\n").Replace("\r", "\\r").Replace("'", "\\'");
                     string script = $@"
-                    var contentArea = document.querySelector('textarea');
-                    if (contentArea) {{
-                        contentArea.value = '{escapedContent}';
-                        contentArea.dispatchEvent(new Event('input'));
-                    }}
-                ";
+                        var contentArea = document.querySelector('textarea');
+                        if (contentArea) {{
+                            contentArea.value = '{escapedContent}';
+                            contentArea.dispatchEvent(new Event('input'));
+                        }}
+                    ";
                     await webView.CoreWebView2.ExecuteScriptAsync(script);
-                };
+                }
 
+                webView.CoreWebView2.NavigationCompleted += NavigationCompletedHandler;
             }
             catch (Exception ex)
             {
@@ -197,8 +200,14 @@ namespace NoteMsEditor
         {
             if (e.Key == Windows.System.VirtualKey.F12)
             {
-                webView.Visibility = Visibility.Visible;
+                Dev.Visibility = Visibility.Visible;
+                webView.UseLayoutRounding = true;
             }
+        }
+
+        private void stopDebugButton_Click(object sender, RoutedEventArgs e)
+        {
+            Dev.Visibility = Visibility.Collapsed;
         }
     }
 }

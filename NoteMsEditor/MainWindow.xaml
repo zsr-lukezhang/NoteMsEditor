@@ -15,7 +15,7 @@
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBox x:Name="uriTextBox" Width="400" Height="20" Margin="10" PlaceholderText="notems" IsSpellCheckEnabled="False"></TextBox>
-            <TextBox x:Name="noteTextBox" Width="400" Height="100" Margin="10" TextWrapping="Wrap" PlaceholderText="Write your note here..." IsSpellCheckEnabled="False" AcceptsReturn="True" />
+            <TextBox x:Name="noteTextBox" Width="400" Height="100" Margin="10" TextWrapping="Wrap" PlaceholderText="Write your note here..." IsSpellCheckEnabled="False" AcceptsReturn="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
             <StackPanel x:Name="Buttons" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
                 <Button x:Name="sendOnceButton" HorizontalAlignment="Center" Width="200" Height="50" Margin="10" ToolTipService.ToolTip="Send Request to Note.MS server" Click="sendOnceButton_Click">
                     <SymbolIcon Symbol="Save"/>
@@ -25,7 +25,11 @@
                 </Button>
             </StackPanel>
         </StackPanel>
-        <WebView2 x:Name="webView" Source="https://bing.com" Width="200" Height="200" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed"/>
+        <StackPanel x:Name="Dev" Orientation="Vertical"  HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed">
+            <TextBlock x:Name="devTextBlock" Text="The F12 Console is for Development Use Only" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+            <Button x:Name="stopDebugButton" Click="stopDebugButton_Click" HorizontalAlignment="Center" Margin="5" Content="Stop Debugging"></Button>
+            <WebView2 x:Name="webView" Source="about:blank" Width="400" Height="150" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        </StackPanel>
         <ProgressRing x:Name="loadingProgressRing" IsActive="True" Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
     </Grid>
 </Window>
